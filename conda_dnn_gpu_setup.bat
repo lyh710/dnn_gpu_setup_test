@@ -2,17 +2,19 @@
 :: Ananconda 3
 :: How to run this script: directly input this file name into Anaconda Prompt, and Enter
 
+set env_name=music
+
 :: clean up
 cls
 call conda deactivate
-call echo y|conda remove --name gpu --all
+call echo y|conda remove --name %env_name% --all
 call del test.result
 
 :: Tensorflow GPU 2.1.0
-call echo y|conda create --name gpu python=3.7.6 tensorflow-gpu
+call echo y|conda create --name %env_name% python=3.7.6 tensorflow-gpu
 
 :: Activate the new env
-call conda activate gpu
+call conda activate %env_name%
 
 :: PyTorch 1.4.0
 call pip install torch===1.4.0 torchvision===0.5.0 -f https://download.pytorch.org/whl/torch_stable.html
@@ -20,7 +22,7 @@ call pip install jupyter
 
 :: deactivate & activate the new env
 call conda deactivate
-call conda activate gpu
+call conda activate %env_name%
 
 :: Test tensorflow-gpu
 call python tf_test.py > tmp.txt
@@ -37,3 +39,8 @@ if "%test_string%" == "True" (echo torch: True >> test.result) else (echo torch:
 :: output test result
 cls
 call type test.result
+
+:: deactivate & activate the new env
+call conda deactivate
+call conda activate %env_name%
+call pip install librosa ffmpeg
