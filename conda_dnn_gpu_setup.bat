@@ -41,6 +41,8 @@ cls
 call type test.result
 
 :: deactivate & activate the new env
+:: and install env specific packages (project specific), and add env to jupyter kernel
 call conda deactivate
 call conda activate %env_name%
 call pip install librosa ffmpeg
+call python -m ipykernel install --user --name %env_name%
